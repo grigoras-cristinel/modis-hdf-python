@@ -1,0 +1,22 @@
+def gridmosaick(ingrids, outputgrid):
+    saga_api.SG_Get_Module_Library_Manager().Add_Directory(os.environ['SAGA_MLB'], 0)
+    m = saga_api.SG_Get_Module_Library_Manager().Get_Module(saga_api.CSG_String('grid_tools'), 3)  # 'Contour Lines from Grid'
+    p = m.Get_Parameters()
+    # paramatri modusl
+    print m.Get_Description().c_str()
+    p(saga_api.CSG_String('GRIDS')).Set_Value(saga_api.CSG_String(ingrids))
+    p(saga_api.CSG_String('INTERPOL')).Set_Value(0)
+    p(saga_api.CSG_String('OVERLAP')).Set_Value(4)
+    p = m.Get_Parameters(saga_api.CSG_String('TARGET'))
+    print p
+    p(saga_api.CSG_String('DEFINITION')).Set_Value(0)
+    p(saga_api.CSG_String('USER_XMIN')).Set_Value(19.800)
+    p(saga_api.CSG_String('USER_XMAX')).Set_Value(30.050)
+    p(saga_api.CSG_String('USER_YMIN')).Set_Value(43.2200)
+    p(saga_api.CSG_String('USER_YMAX')).Set_Value(48.5400)
+    p(saga_api.CSG_String('USER_SIZE')).Set_Value(0.0510)
+    p(saga_api.CSG_String('OUT_GRID')).Set_Value(saga_api.CSG_String(outputgrid))
+    if m.Execute() == 0:
+        print('ERROR: executing module [' + m.Get_Name().c_str() + ']')
+        return 0
+    pass
